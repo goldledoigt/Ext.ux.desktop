@@ -10,7 +10,8 @@ Ext.ux.desktop.Desktop = function() {
   };
 
   var setDesktopItem = function(item) {
-    if (item) panel.add(item);
+//    if (item) panel.add(item);
+    if (item) view.add(item);
   };
 
   /*********************************************/
@@ -34,7 +35,7 @@ Ext.ux.desktop.Desktop = function() {
       }
     }
   });
-/*
+
   view = new Ext.ux.desktop.View({
     listeners:{
       afterrender:function() {
@@ -42,13 +43,13 @@ Ext.ux.desktop.Desktop = function() {
       }
     }
   });
-*/
+
   panel = new Ext.Panel({
     bbar:bbar
     ,border:false
-    ,layout:"absolute"
-//    ,layout:"fit"
-//    ,items:view
+//    ,layout:"absolute"
+    ,layout:"fit"
+    ,items:view
   });
 
   viewport = new Ext.Viewport({
@@ -94,5 +95,5 @@ Ext.ux.desktop.Desktop = function() {
 Ext.onReady(function() {
   var Dsk = Ext.ux.desktop.Desktop,
   img = "http://www.thoosje.com/vista-wallpapers/windowsvista/vista_wallpapers(53).jpg";
-  Dsk.setWallpaper(img);
+  //Dsk.setWallpaper(img);
 });
