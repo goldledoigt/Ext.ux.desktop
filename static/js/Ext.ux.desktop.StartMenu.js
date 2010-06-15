@@ -8,7 +8,7 @@ Ext.ux.desktop.StartMenu = Ext.extend(Ext.menu.Menu, {
 
   ,afterRender:function() {
     Ext.ux.desktop.StartMenu.superclass.afterRender.call(this);
-    console.log('menu afterRender', this, arguments, Ext.ux.desktop.StartMenu.Bookmarks);
+    //console.log('menu afterRender', this, arguments, Ext.ux.desktop.StartMenu.Bookmarks);
   }
 
 });

@@ -1,82 +1,98 @@
 Ext.ns('Ext.ux.desktop');
 
 Ext.ux.desktop.Desktop = function() {
+  var me, menu, bbar, view, panel, viewport
+  ,apps = []
+  ,rendered = false;
 
-  var wallpaper = "http://www.thoosje.com/vista-wallpapers/windowsvista/vista_wallpapers(53).jpg";
-
-  var menu = new Ext.ux.desktop.StartMenu();
-
-  var bbar = [{
-    text:"Start"
-    ,menu:menu
-  }];
-
-  var panel = new Ext.Panel({
-    bbar:bbar
-  });
-
-  var setWallpaper = function(img) {
-    console.log('setWallpaper', this, arguments, this.body);
-    panel.body.setStyle("background-image", "url('"+img+"')");
+  var setStartMenuItem = function(item) {
+    if (item) menu.add(item);
   };
 
-  var init = function() {
-    setWallpaper(wallpaper);
+  var setDesktopItem = function(item) {
+    if (item) panel.add(item);
   };
 
-  var viewport = new Ext.Viewport({
-    layout:"fit"
-    ,items:panel
-    ,listeners:{
+  /*********************************************/
+
+  menu = new Ext.ux.desktop.StartMenu({
+    listeners:{
       afterrender:function() {
-	init();
+	//console.log("render menu");
       }
     }
   });
 
+  bbar = new Ext.Toolbar({
+    items:[{
+      text:"Start"
+      ,menu:menu
+    }, "-"]
+    ,listeners:{
+      afterrender:function() {
+	//console.log("render toolbar");
+      }
+    }
+  });
+/*
+  view = new Ext.ux.desktop.View({
+    listeners:{
+      afterrender:function() {
+	//console.log("render view");
+      }
+    }
+  });
+*/
+  panel = new Ext.Panel({
+    bbar:bbar
+    ,border:false
+    ,layout:"absolute"
+//    ,layout:"fit"
+//    ,items:view
+  });
+
+  viewport = new Ext.Viewport({
+    layout:"fit"
+    ,items:panel
+  });
+
   return {
-    getStartMenu:function() {
+
+    rendered:rendered
+
+    ,getStartMenu:function() {
       return menu;
     }
+
+    ,getView:function() {
+      return view;
+    }
+
+    ,getStatusBar:function() {
+      return panel.getBottomToolbar();
+    }
+
+    ,registerApplication:function(app) {
+      apps.push(this.loadApp(app));
+    }
+
+    ,loadApp:function(app) {
+      app = new app;
+      setStartMenuItem(app.getMenu());
+      setDesktopItem(app.getIcon());
+      return app;
+    }
+
+    ,setWallpaper:function(img) {
+      panel.body.setStyle("background-image", "url('"+img+"')");
+    }
+
   };
 
 }();
 
-
-/*
-Ext.extend(Ext.Panel, {
-
-
-
-  ,initComponent:function() {
-
-
-
-    Ext.ux.desktop.Desktop.superclass.initComponent.call(this);
-
-    this.on({
-
-    });
-  }
-
-  ,afterRender:function() {
-    console.log('afterRender', this, arguments, Ext.ux.desktop);
-    Ext.ux.desktop.Desktop.superclass.afterRender.call(this);
-    this.setWallpaper(this.wallpaper);
-  }
-
-  ,setWallpaper:function(img) {
-    console.log('setWallpaper', this, arguments, this.body);
-    this.body.setStyle("background-image", "url('"+img+"')");
-  }
-
-  ,getStartMenu:function() {
-    if (!this.startMenu)
-      this.startMenu = new Ext.ux.desktop.StartMenu();
-    return this.startMenu;
-  }
-
+Ext.onReady(function() {
+  var Dsk = Ext.ux.desktop.Desktop,
+  img = "http://www.thoosje.com/vista-wallpapers/windowsvista/vista_wallpapers(53).jpg";
+  Dsk.setWallpaper(img);
 });
-
-Ext.reg('desktop', Ext.ux.desktop.Desktop);
-*/

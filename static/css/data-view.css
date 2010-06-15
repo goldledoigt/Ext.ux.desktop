@@ -1,0 +1,61 @@
+/*!
+ * Ext JS Library 3.2.1
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+.x-desktop-view .x-panel-body{
+	background: white;
+	font: 11px Arial, Helvetica, sans-serif;
+}
+.x-desktop-view .thumb{
+x	background: #dddddd;
+x	padding: 3px;
+        text-align:center;
+}
+.x-desktop-view .thumb img{
+	height: 64px;
+	width: 64px;
+}
+.x-desktop-view .thumb-wrap{
+	float: left;
+	margin: 4px;
+	margin-right: 0;
+	padding: 5px;
+}
+.x-desktop-view .thumb-wrap span{
+	display: block;
+	overflow: hidden;
+	text-align: center;
+        font:13px arial,tahoma,verdana,helvetica;
+}
+
+.x-desktop-view .x-view-over{
+    border:1px solid #dddddd;
+    opacity:0.2;
+    background-color:#EFEFEF;
+x    background: #efefef url(http://lib.chewam.net/ext/resources/images/default/grid/row-over.gif) repeat-x left top;
+    padding: 4px;
+}
+
+.x-desktop-view .x-view-selected{
+x	background: #eff5fb url(img/selected.gif) no-repeat right bottom;
+	border:1px solid #99bbe8;
+	padding: 4px;
+}
+.x-desktop-view .x-view-selected .thumb{
+	background:transparent;
+}
+
+.x-desktop-view .loading-indicator {
+	font-size:11px;
+	background-image:url(http://lib.chewam.net/ext/resources/images/default/grid/loading.gif);
+	background-repeat: no-repeat;
+	background-position: left;
+	padding-left:20px;
+	margin:10px;
+}
+
+.x-desktop-view .x-layout-split {
+	background-color:#DFE8F6;
+}
