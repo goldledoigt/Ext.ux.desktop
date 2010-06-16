@@ -12,7 +12,7 @@ Ext.ux.desktop.Applications.YoutubePlayer = Ext.extend(Ext.ux.desktop.Applicatio
 
     this.menu = new Ext.menu.Menu({
       items:[{
-	text:"Video 1"
+    	text:"Video 1"
       }]
     });
 

@@ -70,15 +70,15 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
     for (var i = 0; i < this.colCount; i++) {
       rowIndex = false;
       this.store.each(function(record, index) {
-	console.log('in store', arguments, record.get("cols")[i], record.get("cols")[i].img);
-	if (record.get("cols")[i].img) {
-	  rowIndex = index;
-	  return false;
-	} else return true;
+	    console.log('in store', arguments, record.get("cols")[i], record.get("cols")[i].img);
+	    if (record.get("cols")[i].img) {
+	        rowIndex = index;
+	        return false;
+	    } else return true;
       });
       if (rowIndex !== false) {
-	console.log("INDEX", rowIndex, this.store.getAt(rowIndex).get("cols"));
-	break;
+	    console.log("INDEX", rowIndex, this.store.getAt(rowIndex).get("cols"));
+	    break;
       }
     }
 //    this.store.add(new this.store.recordType(data));
