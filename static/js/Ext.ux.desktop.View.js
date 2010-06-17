@@ -3,26 +3,30 @@ Ext.ns('Ext.ux.desktop');
 Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
 
   cls:"x-desktop-view"
-  ,overClass:"x-view-over"
-  ,itemSelector:"div.thumb-wrap"
+  ,overClass:"x-desktop-view-cell-over"
+  ,itemSelector:"td.x-desktop-view-cell"
+  ,selectedClass:"x-desktop-view-cell-selected"
   ,multiSelect:true
-  ,wallpaper:"http://www.thoosje.com/vista-wallpapers/windowsvista/vista_wallpapers(53).jpg"
+//  ,wallpaper:"http://www.thoosje.com/vista-wallpapers/windowsvista/vista_wallpapers(53).jpg"
+  ,wallpaper:"http://bestbusyboy.com/Tibetica.net/images/high-resolution-wallpaper.jpg"
 
   ,initComponent:function() {
 
-    this.iconWidth = 80;
-    this.iconHeight = 80;
+    this.iconWidth = 100;
+    this.iconHeight = 100;
 
     this.store = new Ext.data.JsonStore({
-      fields:["name", "img", "cols"]
+      fields:["name", "iconCls", "cols"]
     });
 
     this.tpl = new Ext.XTemplate(
-      '<table style="width:100%;border-collapse:collapsed;">',
+      '<table style="width:100%;border-collapse:collapse;">',
       '<tpl for=".">',
-      '<tr style="border:1px solid black;">',
+      '<tr>',
       '<tpl for="cols">',
-      '<td style="border:1px solid black!important;height:80px;width:80px;">{name}</td>',
+      '<td class="x-desktop-view-cell" style="">',
+      '<div class="{iconCls}"><a>{name}</a></div>',
+      '</td>',
       '</tpl>',
       '</tr>',
       '</tpl>',
@@ -33,23 +37,27 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
 
     this.on({
       afterrender:function() {
-	this.setWallpaper(this.wallpaper);
+        //this.setWallpaper(this.wallpaper);
       }
       ,resize:function(view, adjWidth, adjHeight, rawWidth, rawHeight) {
-	var rows, cols;
-	var viewArea = adjWidth * adjHeight;
-	this.rowCount = Math.floor(adjHeight / this.iconHeight);
-	this.colCount = Math.floor((adjWidth) / this.iconWidth);
-	console.log('resize', this, arguments, this.rowCount, this.colCount);
-	rows = [];
-	for (var i = 0; i < this.rowCount; i++) {
-	  cols = [];
-	  for (var j = 0; j < this.colCount; j++) {
-	    cols.push({name:i+" - "+j, img:"**"});
-	  }
-	  rows.push({name:"<i>blank</i>", cols:cols});
-	}
-	view.store.loadData(rows);
+        var rows, cols, record, cell, data, index = 0,
+        viewArea = adjWidth * adjHeight;
+        this.rowCount = Math.floor(adjHeight / this.iconHeight);
+        this.colCount = Math.floor((adjWidth) / this.iconWidth);
+        rows = [];
+        for (var i = 0; i < this.rowCount; i++) {
+          cols = [];
+          for (var j = 0; j < this.colCount; j++) {
+            data = {};
+            record = this.store.getAt(i);
+            if (record) cell = record.get("cols")[j];
+            if (cell) Ext.apply(data, cell);
+            index++;
+            cols.push(data);
+          }
+          rows.push({cols:cols});
+        }
+        view.store.loadData(rows);
       }
     });
 
@@ -65,24 +73,29 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
   }
 
   ,add:function(data) {
-    var rowIndex;
-    console.log('add', this, arguments);
+    var rowIndex, colIndex, nodeIndex, name;
     for (var i = 0; i < this.colCount; i++) {
       rowIndex = false;
       this.store.each(function(record, index) {
-	    console.log('in store', arguments, record.get("cols")[i], record.get("cols")[i].img);
-	    if (record.get("cols")[i].img) {
+        name = record.get("cols")[i].name;
+	    if (!name || !name.length) {
 	        rowIndex = index;
+            Ext.isString();
 	        return false;
 	    } else return true;
       });
       if (rowIndex !== false) {
-	    console.log("INDEX", rowIndex, this.store.getAt(rowIndex).get("cols"));
+        colIndex = i;
 	    break;
       }
     }
-//    this.store.add(new this.store.recordType(data));
-// TO BE CONTINUED ...
-  }
+    var cols = this.store.getAt(rowIndex).get("cols");
+    cols[colIndex].name = data.data.name;
+    cols[colIndex].iconCls = data.data.iconCls;
+    this.store.getAt(rowIndex).set("cols", cols);
+    nodeIndex = (rowIndex*cols.length) + colIndex;
+    this.refresh();
+    // this.refreshNode(nodeIndex);
+    }
 
 });
