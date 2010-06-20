@@ -32,6 +32,11 @@ x  width:64px;
 /* YOUTUBE PLAYER
 **************************************************/
 
+.ext-ux-youtubeplayer {
+    xborder-right:1px solid #99BBE8;
+    xborder-bottom:1px solid #99BBE8;
+}
+
 .icon-youtubeplayer-16 {
   background-image:url("http://cdn.iconfinder.net/data/icons/aquaticus/16%20X%2016/youtube.png") !important;
   background-repeat:no-repeat;
@@ -42,6 +47,60 @@ x  width:64px;
   background-repeat:no-repeat;
 }
 
+.x-desktop-youtubesearch-item {
+    text-align:center;
+    padding:5px 0;
+}
+
+.x-desktop-youtubesearch-item-selected {
+    background-color:#DFE8F6;
+}
+
+.x-desktop-youtubesearch-item-over {
+    background-color:#efefef;
+}
+
+.x-desktop-youtubesearch-item img {
+    clip:rect(10px, 94px, 68px, 0pt);
+    cursor:pointer;
+}
+
+.x-desktop-youtubesearch-item-title {
+    padding:0 10px;
+}
+
+.x-desktop-youtubesearch-item-title a {
+    color:#15428B;
+    text-decoration:none;
+}
+
+.x-desktop-youtubesearch-item-title a:hover {
+    text-decoration:underline;
+}
+
+.x-desktop-youtubesearch-item-details {
+    width:120px;
+    margin:0 auto;
+}
+
+.x-desktop-youtubesearch-item-details div {
+    float:left;
+    width:90px;
+    color:#666666;
+    font-size:11px;
+    text-align:left;
+}
+/*
+.x-desktop-youtubesearch-item table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+.x-desktop-youtubesearch-item td {
+    color:#666666;
+    font-size:11px;
+}
+*/
 /* DESKTOP VIEW
 **************************************************/
 

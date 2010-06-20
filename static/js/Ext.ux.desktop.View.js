@@ -7,7 +7,6 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
   ,itemSelector:"td.x-desktop-view-cell"
   ,selectedClass:"x-desktop-view-cell-selected"
   ,multiSelect:true
-//  ,wallpaper:"http://www.thoosje.com/vista-wallpapers/windowsvista/vista_wallpapers(53).jpg"
   ,wallpaper:"http://bestbusyboy.com/Tibetica.net/images/high-resolution-wallpaper.jpg"
 
   ,initComponent:function() {
@@ -39,11 +38,15 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
       afterrender:function() {
         //this.setWallpaper(this.wallpaper);
       }
+      ,dblclick:function(view, index, node, event) {
+        var data = view.getData(index);
+        data.handler.call(data.scope || this);
+      }
       ,resize:function(view, adjWidth, adjHeight, rawWidth, rawHeight) {
         var rows, cols, record, cell, data, index = 0,
         viewArea = adjWidth * adjHeight;
         this.rowCount = Math.floor(adjHeight / this.iconHeight);
-        this.colCount = Math.floor((adjWidth) / this.iconWidth);
+        this.colCount = Math.floor(adjWidth / this.iconWidth);
         rows = [];
         for (var i = 0; i < this.rowCount; i++) {
           cols = [];
@@ -80,7 +83,6 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
         name = record.get("cols")[i].name;
 	    if (!name || !name.length) {
 	        rowIndex = index;
-            Ext.isString();
 	        return false;
 	    } else return true;
       });
@@ -90,12 +92,13 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
       }
     }
     var cols = this.store.getAt(rowIndex).get("cols");
-    cols[colIndex].name = data.data.name;
-    cols[colIndex].iconCls = data.data.iconCls;
-    this.store.getAt(rowIndex).set("cols", cols);
-    nodeIndex = (rowIndex*cols.length) + colIndex;
+    Ext.apply(cols[colIndex], data);
     this.refresh();
-    // this.refreshNode(nodeIndex);
-    }
+  }
 
+    ,getData:function(index) {
+      var rowIndex = Math.floor(index / this.colCount);
+      var colIndex = Math.ceil(index - (rowIndex * this.colCount));
+      return this.store.getAt(rowIndex).get("cols")[colIndex];
+    }
 });

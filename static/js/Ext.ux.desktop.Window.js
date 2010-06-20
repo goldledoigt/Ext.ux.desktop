@@ -11,26 +11,27 @@ Ext.ux.desktop.Window = Ext.extend(Ext.Window, {
     this.on({
       scope:this
       ,afterrender:function() {
-	if (statusBar.items.length > 2) statusBar.add(" ");
-	this.statusBarBtn = statusBar.addButton({
-	  text:"<i>unknown</i>"
-	  ,scope:this
-	  ,handler:function() {
-	    if (this.hidden)
-	      this.show(this.statusBarBtn.el);
-	    else this.hide(this.statusBarBtn.el);
-	  }
-	});
-	statusBar.doLayout();
+        if (statusBar.items.length > 2) statusBar.add(" ");
+        this.statusBarBtn = statusBar.addButton({
+          text:this.title || "<i>unknown</i>"
+          ,iconCls:this.iconCls || ""
+          ,scope:this
+          ,handler:function() {
+            if (this.hidden)
+              this.show(this.statusBarBtn.el);
+            else this.hide(this.statusBarBtn.el);
+          }
+        });
+        statusBar.doLayout();
       }
       ,show:function() {
-	this.statusBarBtn.toggle(true);
+        this.statusBarBtn.toggle(true);
       }
       ,hide:function() {
-	this.statusBarBtn.toggle(false);
+        this.statusBarBtn.toggle(false);
       }
       ,close:function() {
-	statusBar.remove(this.statusBarBtn);
+        statusBar.remove(this.statusBarBtn);
       }
     });
   }
