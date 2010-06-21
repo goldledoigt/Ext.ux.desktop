@@ -29,6 +29,35 @@ x  width:64px;
   background-repeat:no-repeat;
 }
 
+.x-desktop-rssreader-col-title {
+    background-image:url("../img/post.gif") !important;
+    padding-left:20px;
+    background-repeat:no-repeat;
+}
+
+
+.x-desktop-rssreader-col-title a {
+    font-size:14px;
+    color:#15428B;
+    text-decoration:none;
+}
+
+.x-desktop-rssreader-col-title a:hover {
+    text-decoration:underline;
+}
+
+.x-desktop-rssreader-col-snippet {
+    color:#555555;
+    padding:2px;
+    white-space:normal;
+}
+
+.x-desktop-rssreader-feed-label {
+    background-image:url("http://cdn.iconfinder.net/data/icons/aquaticus/16%20X%2016/feed.png") !important;
+    background-repeat:no-repeat;
+    padding:2px 0 2px 20px;
+}
+
 /* YOUTUBE PLAYER
 **************************************************/
 
