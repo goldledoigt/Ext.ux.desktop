@@ -22,13 +22,11 @@ Ext.ux.desktop.Applications.FileBrowser = Ext.extend(Ext.ux.desktop.Applications
     ,start:function() {
 
         this.filebrowser = new Ext.ux.FileBrowser({
-            root:"pof"
-            ,rootText:"Home"
-            ,url:""
-            ,enableBrowser:false
-            ,enableUpload:false
-            ,statusBar:false
-            ,readOnly:true
+            rootText:"My Documents"
+            ,readOnly:false
+            ,enableBrowser:true
+            ,browserDDGroup:"DDGroup1"
+            ,url:"php/getfiles.php"
         });
 
         new Ext.ux.desktop.Window({
