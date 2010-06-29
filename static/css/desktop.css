@@ -16,6 +16,19 @@ x  width:64px;
   font-family:arial,tahoma,verdana,helvetica;
 }
 
+/* CONTACTS
+**************************************************/
+
+.icon-contacts-16 {
+  background-image:url("http://cdn.iconfinder.net/data/icons/ellegant/16x16/26.png") !important;
+  background-repeat:no-repeat;
+}
+
+.icon-contacts-64 {
+  background-image:url("http://cdn.iconfinder.net/data/icons/ellegant/64x64/25.png") !important;
+  background-repeat:no-repeat;
+}
+
 /* RSS READER
 **************************************************/
 
@@ -48,8 +61,12 @@ x  width:64px;
 
 .x-desktop-rssreader-col-snippet {
     color:#555555;
-    padding:2px;
+    padding:2px 2px 2px 26px;
     white-space:normal;
+}
+
+.x-desktop-rssreader-col-date {
+    color:#666666;
 }
 
 .x-desktop-rssreader-feed-label {

@@ -3,7 +3,6 @@
   <head>
     <link rel="stylesheet" type="text/css" href="/lib/ext/resources/css/ext-all.css" />
     <link rel="stylesheet" type="text/css" href="./static/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="./static/js/modules/Ext.ux.filebrowser/css/data-view.css" />
     <link rel="stylesheet" type="text/css" href="./static/js/modules/Ext.ux.filebrowser/css/filebrowser.css" />
     <link rel="stylesheet" type="text/css" href="./static/js/modules/Ext.ux.YoutubePlayer/src/resources/css/ext-ux-youtubeplayer.css" />
     <link rel="stylesheet" type="text/css" href="./static/js/modules/Ext.ux.YoutubePlayer/src/resources/css/ext-ux-youtubeplayer-control.css" />
@@ -12,11 +11,13 @@
   </head>
 
   <body>
+    <img src="static/img/s.gif" />
     <div id="foo"></div>
 
     <script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAHOITiVvSWeOehA_yhs9LiRTb-vLQlFZmc2N8bgWI8YDPp5FEVBTBZMzxpxzJLcUbpV3pwzRxpINA-g"></script>
     <script type="text/javascript">
         google.load("feeds", "1");
+        google.load("gdata", "2.x");
     </script>
 
     <!-- EXTJS -->
@@ -25,10 +26,8 @@
 
     <!-- MODULES -->
     <script type="text/javascript" src="./static/js/modules/SearchField.js"></script>
+
     <script type="text/javascript" src="./static/js/modules/Ext.ux.filebrowser/js/data-view-plugins.js"></script>
-    <script type="text/javascript" src="./static/js/modules/Ext.ux.filebrowser/js/Ext.ux.form.BrowseButton.js"></script>
-    <script type="text/javascript" src="./static/js/modules/Ext.ux.filebrowser/js/Ext.ux.FileUploader.js"></script>
-    <script type="text/javascript" src="./static/js/modules/Ext.ux.filebrowser/js/Ext.ux.UploadPanel.js"></script>
     <script type="text/javascript" src="./static/js/modules/Ext.ux.filebrowser/js/Ext.ux.FileTreeMenu.js"></script>
     <script type="text/javascript" src="./static/js/modules/Ext.ux.filebrowser/js/Ext.ux.FileTreePanel.js"></script>
     <script type="text/javascript" src="./static/js/modules/Ext.ux.filebrowser/js/Ext.ux.GridBrowser.js"></script>
@@ -50,6 +49,7 @@
     <script type="text/javascript" src="./static/js/apps/Ext.ux.desktop.Applications.Bookmarks.js"></script>
     <script type="text/javascript" src="./static/js/apps/Ext.ux.desktop.Applications.RSSReader.js"></script>
     <script type="text/javascript" src="./static/js/apps/Ext.ux.desktop.Applications.YoutubePlayer.js"></script>
+    <script type="text/javascript" src="./static/js/apps/Ext.ux.desktop.Applications.Contacts.js"></script>
 
 
     <script type="text/javascript" src="./static/js/script.js"></script>

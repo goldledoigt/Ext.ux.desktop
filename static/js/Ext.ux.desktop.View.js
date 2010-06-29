@@ -7,12 +7,14 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
   ,itemSelector:"td.x-desktop-view-cell"
   ,selectedClass:"x-desktop-view-cell-selected"
   ,multiSelect:true
-  ,wallpaper:"http://bestbusyboy.com/Tibetica.net/images/high-resolution-wallpaper.jpg"
+  ,wallpaper:"http://www.android.com/media/wallpaper/android-wallpaper6_1280x800.jpg"
 
   ,initComponent:function() {
 
     this.iconWidth = 100;
     this.iconHeight = 100;
+
+    this.icons = [];
 
     this.store = new Ext.data.JsonStore({
       fields:["name", "iconCls", "cols"]
@@ -36,7 +38,7 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
 
     this.on({
       afterrender:function() {
-        //this.setWallpaper(this.wallpaper);
+        this.setWallpaper(this.wallpaper);
       }
       ,dblclick:function(view, index, node, event) {
         var data = view.getData(index);
@@ -52,15 +54,16 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
           cols = [];
           for (var j = 0; j < this.colCount; j++) {
             data = {};
-            record = this.store.getAt(i);
-            if (record) cell = record.get("cols")[j];
-            if (cell) Ext.apply(data, cell);
+            //record = this.store.getAt(i);
+            //if (record) cell = record.get("cols")[j];
+            //if (cell) Ext.apply(data, cell);
             index++;
             cols.push(data);
           }
           rows.push({cols:cols});
         }
         view.store.loadData(rows);
+        view.loadIcons();
       }
     });
 
@@ -77,6 +80,7 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
 
   ,add:function(data) {
     var rowIndex, colIndex, nodeIndex, name;
+    if (this.icons.indexOf(data) < 0) this.icons.push(data);
     for (var i = 0; i < this.colCount; i++) {
       rowIndex = false;
       this.store.each(function(record, index) {
@@ -100,5 +104,9 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
       var rowIndex = Math.floor(index / this.colCount);
       var colIndex = Math.ceil(index - (rowIndex * this.colCount));
       return this.store.getAt(rowIndex).get("cols")[colIndex];
+    }
+
+    ,loadIcons:function() {
+        Ext.each(this.icons, this.add, this);
     }
 });

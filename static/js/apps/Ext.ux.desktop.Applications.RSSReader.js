@@ -24,7 +24,6 @@ Ext.ux.desktop.Applications.RSSReader = Ext.extend(Ext.ux.desktop.Applications.A
         var titleTpl = new Ext.Template(
             '<div class="x-desktop-rssreader-col-title">'
             ,'<div style="white-space:normal"><a href="{link}" target="_blank">{title}</a></div>'
-            ,'<div class="x-desktop-rssreader-col-snippet">{contentSnippet}</div>'
             ,'</div>'
             ,{compiled:true}
         );
@@ -34,7 +33,7 @@ Ext.ux.desktop.Applications.RSSReader = Ext.extend(Ext.ux.desktop.Applications.A
         };
 
         var dateRenderer = function(value) {
-            return value.format("d/m/Y");
+            return '<div class="x-desktop-rssreader-col-date">'+value.format("d/m/Y")+'</div>';
         };
 
         var labelTpl = '<div class="x-desktop-rssreader-feed-label">{label}</div>';
@@ -64,7 +63,15 @@ Ext.ux.desktop.Applications.RSSReader = Ext.extend(Ext.ux.desktop.Applications.A
         this.postListView = new Ext.grid.GridPanel({
             border:false
             ,enableHdMenu:false
-            ,viewConfig:{forceFit:true}
+            ,viewConfig:{
+                forceFit:true
+                ,enableRowBody:true
+                ,getRowClass:function(record, index, rowParams, store) {
+                    rowParams.body = '<div class="x-desktop-rssreader-col-snippet">' +
+                        record.get("contentSnippet") +
+                        '</div>';
+                }
+            }
             ,store:new Ext.data.JsonStore({
                 root:"feed.entries"
                 ,fields:[
