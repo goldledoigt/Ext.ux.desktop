@@ -75,7 +75,10 @@ Ext.ux.desktop.View = Ext.extend(Ext.DataView, {
   }
 
   ,setWallpaper:function(img) {
-    this.el.setStyle("background-image", "url('"+img+"')");
+    this.el.setStyle({
+        "background-image":"url('"+img+"')"
+        ,"background-position":"50% 50%"
+    });
   }
 
   ,add:function(data) {

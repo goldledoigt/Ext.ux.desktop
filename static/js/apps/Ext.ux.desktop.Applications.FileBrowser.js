@@ -27,6 +27,7 @@ Ext.ux.desktop.Applications.FileBrowser = Ext.extend(Ext.ux.desktop.Applications
             ,enableBrowser:true
             ,browserDDGroup:"DDGroup1"
             ,url:"php/getfiles.php"
+            ,enableUpload:true
         });
 
         new Ext.ux.desktop.Window({
