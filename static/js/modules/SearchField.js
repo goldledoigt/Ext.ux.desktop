@@ -28,14 +28,13 @@ Ext.ux.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
     onTrigger1Click : function(){
         if(this.hasSearch){
             this.el.dom.value = '';
-            //var o = {start: 0};
-            //this.store.baseParams = this.store.baseParams || {};
-            //this.store.baseParams[this.paramName] = '';
-            //this.store.reload({params:o});
-            this.store.setBaseParam(this.paramNames.start, 1);
-            //this.store.setBaseParam(this.paramNames.limit, this.limit);
-            this.store.setBaseParam(this.paramNames.query, "");
-            this.store.load();
+if (this.paramNames) {
+ this.store.setBaseParam(this.paramNames.start, 1);
+ this.store.setBaseParam(this.paramNames.query, "");
+ this.store.load();
+ } else {
+ this.fireEvent("clear", this);
+ } 
             this.triggers[0].hide();
             this.hasSearch = false;
         }
@@ -47,14 +46,14 @@ Ext.ux.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
             this.onTrigger1Click();
             return;
         }
-//        var o = {start: 0};
-//        this.store.baseParams = this.store.baseParams || {};
-//        this.store.baseParams[this.paramName] = v;
-//        this.store.reload({params:o});
-        this.store.setBaseParam(this.paramNames.start, 1);
-        //this.store.setBaseParam(this.paramNames.limit, this.limit);
-        this.store.setBaseParam(this.paramNames.query, v);
-        this.store.load();
+if (this.paramNames) {
+ this.store.setBaseParam(this.paramNames.start, 1);
+ this.store.setBaseParam(this.paramNames.query, v);
+ this.store.load();
+ } else {
+ console.log("fire search", this, v);
+ this.fireEvent("search", this, v);
+ }
         this.hasSearch = true;
         this.triggers[0].show();
     }

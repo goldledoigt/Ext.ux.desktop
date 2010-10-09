@@ -2,153 +2,185 @@ Ext.ns('Ext.ux.desktop.Applications');
 
 Ext.ux.desktop.Applications.Contacts = Ext.extend(Ext.ux.desktop.Applications.Application, {
 
-    name:"Contacts"
+        name:"Contacts"
 
-    ,iconCls16:"icon-contacts-16"
+         ,iconCls16:"icon-contacts-16"
 
-    ,iconCls64:"icon-contacts-64"
+         ,iconCls64:"icon-contacts-64"
 
-    ,AUTH_SCOPE:"http://www.google.com/m8/feeds/"
-    ,GROUPS_URL:"http://www.google.com/m8/feeds/groups/default/full"
-    ,CONTACTS_URL:"http://www.google.com/m8/feeds/contacts/default/full"
+         ,AUTH_SCOPE:"http://www.google.com/m8/feeds/"
+         ,GROUPS_URL:"http://www.google.com/m8/feeds/groups/default/full"
+         ,CONTACTS_URL:"http://www.google.com/m8/feeds/contacts/default/full"
 
-    ,constructor:function() {
+         ,constructor:function() {
 
-        this.menu = new Ext.menu.Menu({
-            items:[{
-                text:"Contacts 1"
-            }]
-        });
+         this.menu = new Ext.menu.Menu({
+         items:[{
+         text:"Contacts 1"
+         }]
+ });
 
-        Ext.ux.desktop.Applications.Contacts.superclass.constructor.call(this);
-    }
+ Ext.ux.desktop.Applications.Contacts.superclass.constructor.call(this);
+ }
 
-    ,start:function() {
+ ,start:function() {
 
-        // Make sure that the client library is initialized
-        google.gdata.client.init(console.log);
+         // Make sure that the client library is initialized
+         google.gdata.client.init(console.log);
 
-        this.serviceName = "dsk-contacts";
+         this.serviceName = "dsk-contacts";
 
-        // Execute only if the current session is valid.
-        if (google.accounts.user.checkLogin(this.AUTH_SCOPE)) {
+         // Execute only if the current session is valid.
+         if (google.accounts.user.checkLogin(this.AUTH_SCOPE)) {
 
-            // Create a new persistant service object
-            this.contactsService = new google.gdata.contacts.ContactsService(this.serviceName);
+         // Create a new persistant service object
+         this.contactsService = new google.gdata.contacts.ContactsService(this.serviceName);
 
-            this.win = new Ext.ux.desktop.Window({
-                width:600
-                ,height:300
-                ,layout:"fit"
-                ,border:false
-                ,title:this.name
-                ,iconCls:this.iconCls16
-                ,items:[{
-                    xtype:"tabpanel"
-                    ,ref:"tabpanel"
-                    ,layoutOnTabChange:true
-                    ,listeners:{
-                        scope:this
-                        ,tabchange:function(tabpanel, grid) {
-                            console.log("tabchange", arguments);
-                            this.getContacts(grid);
-                        }
-                    }
-                }]
-            }).show();
+         this.win = new Ext.ux.desktop.Window({
+         width:600
+         ,height:300
+         ,layout:"fit"
+         ,border:false
+         ,title:this.name
+         ,iconCls:this.iconCls16
+         ,items:[{
+         xtype:"tabpanel"
+         ,ref:"tabpanel"
+         ,enableTabScroll:true
+         ,layoutOnTabChange:true
+         ,tbar:[{
+         xtype:"searchfield"
+         ,ref:"../../searchField"
+         ,listeners:{
+         scope:this
+         ,search:this.onSearch
+         ,clear:this.onClearSearch
+         }
+ }]
+ ,listeners:{
 
-            this.mask = new Ext.LoadMask(this.win.body, {msg:"Loading UI..."});
+         scope:this
+         ,tabchange:function(tabpanel, grid) {
+         console.log("tabchange", arguments);
+         this.getContacts(grid);
+         }
+ }
+ }]
+ }).show();
 
-            this.getGroups();
+ this.mask = new Ext.LoadMask(this.win.body, {msg:"Loading UI..."});
 
-        } else {
-            this.login();
-        }
+ this.getGroups();
 
-    }
+ } else {
+         this.login();
+         }
 
-    ,login: function() {
-        if (this.serviceName != 0 && typeof(this.serviceName) != 'undefined') {
-            // Obtain a login token
-            google.accounts.user.login(this.AUTH_SCOPE);
-        } else {
-            console.log('Service name undefined, call setServiceName()');
-        }
-    }
+ }
 
-    ,getGroups:function() {
-        this.mask.msg = "Loading groups...";
-        this.mask.show();
-        var query = new google.gdata.contacts.ContactQuery(this.GROUPS_URL);
-        query.setParam('max-results', 1000);
+ ,login: function() {
+         if (this.serviceName != 0 && typeof(this.serviceName) != 'undefined') {
+         // Obtain a login token
+         google.accounts.user.login(this.AUTH_SCOPE);
+         } else {
+         console.log('Service name undefined, call setServiceName()');
+         }
+ }
 
-        var callback = function(feedRoot) {
-            var entries = feedRoot.feed.entry;
-            var groups = [];
-            Ext.each(entries, function(entry) {
-                groups.push({
-                    groupId:entry.getId().getValue()
-                    ,title:entry.getTitle().getText()
-                    ,layout:"fit"
-                    ,xtype:"dsk-contacts-list"
-                });
-            });
-            this.setGroups(groups);
-        };
+ ,getGroups:function() {
+         this.mask.msg = "Loading groups...";
+         this.mask.show();
+         var query = new google.gdata.contacts.ContactQuery(this.GROUPS_URL);
+         query.setParam('max-results', 1000);
 
-        this.contactsService.getContactGroupFeed(query, callback.createDelegate(this), console.log);
+         var callback = function(feedRoot) {
+         var entries = feedRoot.feed.entry;
+         var groups = [];
+         Ext.each(entries, function(entry) {
+         groups.push({
+         groupId:entry.getId().getValue()
+         ,title:entry.getTitle().getText()
+         ,layout:"fit"
+         ,xtype:"dsk-contacts-list"
+         });
+ });
+ this.setGroups(groups);
+ };
 
-    }
+ this.contactsService.getContactGroupFeed(query, callback.createDelegate(this), console.log);
 
-    ,setGroups:function(groups) {
-        this.win.tabpanel.removeAll();
-        this.win.tabpanel.add(groups);
-        this.win.tabpanel.setActiveTab(0);
-    }
+ }
 
-    ,getContacts:function(grid) {
-        this.mask.msg = "Loading contacts...";
-        this.mask.show();
-        var query = new google.gdata.contacts.ContactQuery(this.CONTACTS_URL);
-        query.setParam('max-results', 1000);
+ ,setGroups:function(groups) {
+         this.win.tabpanel.removeAll();
+         this.win.tabpanel.add(groups);
+         this.win.tabpanel.setActiveTab(0);
+         }
 
-        var callback = function(feedRoot) {
-            var entries = feedRoot.feed.entry;
-            var contacts = [];
-            Ext.each(entries, function(entry) {
-                var name;
-                if (entry.getTitle() && entry.getTitle().getText())
-                    name = entry.getTitle().getText();
-                else if (entry.getEmailAddresses() && entry.getEmailAddresses().length)
-                    name = entry.getEmailAddresses()[0].getAddress();
-                else name = "Untitled Contact";
-                contacts.push({
-                    id:entry.getId().getValue()
-                    ,name:name
-                });
-            });
-            this.setContacts(grid, contacts);
-        };
+ ,getContacts:function(grid) {
+         this.mask.msg = "Loading contacts...";
+         this.mask.show();
+         var query = new google.gdata.contacts.ContactQuery(this.CONTACTS_URL);
+         query.setParam('max-results', 1000);
 
-        if (grid.groupId != this.CONTACTS_URL)
-          query.setParam('group', grid.groupId);
-        this.contactsService.getContactFeed(query, callback.createDelegate(this), console.log);
-    }
+         var callback = function(feedRoot) {
+         var entries = feedRoot.feed.entry;
+         var contacts = [];
+         Ext.each(entries, function(entry) {
+         console.log("entry", entry);
+         var name;
+         if (entry.getTitle() && entry.getTitle().getText())
+         name = entry.getTitle().getText();
+         else if (entry.getEmailAddresses() && entry.getEmailAddresses().length)
+         name = entry.getName();
+         else name = "Untitled Contact";
+         contacts.push({
+         id:entry.getId().getValue()
+         ,name:name
+         ,email:entry.getEmailAddresses()[0].getAddress()
+         });
+ });
+ this.setContacts(grid, contacts);
+ };
 
-    ,setContacts:function(grid, contacts) {
-        console.log("contacts", arguments);
-        grid.getStore().loadData(contacts);
-        this.mask.hide();
-    }
+ if (grid.groupId != this.CONTACTS_URL)
+ query.setParam('group', grid.groupId);
+ this.contactsService.getContactFeed(query, callback.createDelegate(this), console.log);
+ }
 
-    ,handleMyFeed:function() {
-        console.log("feed", arguments);
-    }
+ ,setContacts:function(grid, contacts) {
+         grid.getStore().loadData(contacts);
+         grid.getStore().sort("name", "ASC");
+         this.win.searchField.store = grid.getStore();
+         var value = this.win.searchField.getValue();
+         if (value.length) this.onSearch(this.win.searchField, value);
+         this.mask.hide();
+         }
 
-    ,handleError:function() {
-        console.log("error", arguments);
-    }
+ ,handleMyFeed:function() {
+         console.log("feed", arguments);
+         }
 
+ ,handleError:function() {
+         console.log("error", arguments);
+         }
+
+ ,onSearch:function(field, query) {
+         field.store.filterBy(
+         this.filterList.createDelegate(this, [field.store, query], true)
+         );
+         }
+
+ ,onClearSearch:function(field) {
+         field.store.clearFilter();
+         }
+
+ ,filterList:function(record, id, store, query) {
+         if (record.get("name").indexOf(query) > -1 || record.get("email").indexOf(query) > -1) {
+         return true;
+         }
+ else return false;
+ }
 });
 
 Ext.ux.desktop.Desktop.registerApplication(Ext.ux.desktop.Applications.Contacts);
@@ -157,24 +189,24 @@ Ext.ux.desktop.Desktop.registerApplication(Ext.ux.desktop.Applications.Contacts)
 
 
 Ext.ux.desktop.Applications.Contacts.ContactList = Ext.extend(Ext.grid.GridPanel, {
+         initComponent:function() {
 
-    initComponent:function() {
+         this.autoExpandColumn = "id";
 
-        this.viewConfig = {forceFit:true};
+         this.store = new Ext.data.JsonStore({
+         fields:["id", "name", "email"]
+         });
 
-        this.store = new Ext.data.JsonStore({
-            fields:["id", "name"]
-        });
+ this.columns = [
+ new Ext.grid.RowNumberer()
+ ,{header:"Name", dataIndex:"name"}
+ ,{id:"id", header:"Email", dataIndex:"email"}
+ ];
 
-        this.columns = [
-            new Ext.grid.RowNumberer()
-            ,{header:"id", dataIndex:"id"}
-            ,{header:"Name", dataIndex:"name"}
-        ];
-
-        Ext.ux.desktop.Applications.Contacts.ContactList.superclass.initComponent.call(this);
-    }
+ Ext.ux.desktop.Applications.Contacts.ContactList.superclass.initComponent.call(this);
+ }
 
 });
 
 Ext.reg("dsk-contacts-list", Ext.ux.desktop.Applications.Contacts.ContactList);
+

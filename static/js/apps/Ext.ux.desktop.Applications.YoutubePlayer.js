@@ -209,7 +209,7 @@ Ext.ux.YoutubeSearch = Ext.extend(Ext.Panel, {
             afterrender:function() {
                 this.mask = new Ext.LoadMask(this.getEl(), {msg:"Loading..."});
             }
-        })
+	});
     }
 });
 
